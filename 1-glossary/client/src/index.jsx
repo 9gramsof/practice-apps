@@ -1,9 +1,21 @@
 import React from "react";
+import ReactDOM from 'react-dom';
 import { render } from "react-dom";
 
-render(
-  <div>
-    <p>Hello, World!</p>
-  </div>,
-  document.getElementById("root")
-);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      glossary: []
+    }
+  }
+  render() {
+    return(
+      <div>
+      <p>Glossary!</p>
+    </div>
+    )
+  }
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
