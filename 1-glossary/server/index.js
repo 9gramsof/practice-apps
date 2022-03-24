@@ -44,6 +44,37 @@ app.get('/terms', (req, res) => {
 //handle an EDIT request
 
 //handle a DELETE request
+app.delete('/terms', (req, res) => {
+  let name = req.body.name;
+  console.log(name);
+  Term.deleteOne({name: name}, (err, result) => {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+
+})
+
+//handle a search GET request
+app.get('/terms/search', (req, res) => {
+  console.log(req.body.name)
+  let term = ".*" + req.body.name + ".*";
+  console.log(term);
+
+  Term.find({name: {$regex: term}}, (err, result) => {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    console.log(result);
+    res.json(result);
+
+  })
+
+})
+
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);

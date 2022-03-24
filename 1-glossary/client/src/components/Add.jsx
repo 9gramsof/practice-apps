@@ -23,8 +23,6 @@ class Add extends React.Component {
     this.props.onSubmit(term);
   }
 
-
-
   render() {
     return(
       <form onSubmit={this.submit}>
