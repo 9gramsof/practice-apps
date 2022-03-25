@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from 'react-dom';
 // import { render } from "react-dom";
 import Add from './components/Add.jsx';
+import Edit from './components/Edit.jsx';
 import Search from './components/Search.jsx';
 const axios = require('axios');
 
@@ -15,6 +16,7 @@ class App extends React.Component {
     this.submit = this.submit.bind(this);
     this.delete = this.delete.bind(this);
     this.search = this.search.bind(this);
+    // this.edit = this.edit.bind(this);
   }
   //render all glossary terms when app initializes
   componentDidMount() {
@@ -38,14 +40,7 @@ class App extends React.Component {
       }
     })
     .then((res) => {
-      axios.get('/terms')
-      .then((res) => {
-        this.setState({glossary: res.data})
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-    })
+      axios.get('/terms').then((res) => {this.setState({glossary: res.data})}).catch((err) => {console.log(err);})})
     .catch((err) => {
       console.log(err);
     })
@@ -70,24 +65,35 @@ class App extends React.Component {
 
   }
 
+  //make a PUT request
+  edit (query) {
+    console.log(query);
+    axios({
+      method: 'put',
+      url: '/terms',
+      data: query
+    })
+    .then((res) => {console.log(res)})
+    .catch((err) => {console.log(err)});
+  }
+
   //search for a word
   search(name) {
-    let word = name;
-    console.log(word);
     axios({
       method: 'get',
-      url: '/terms/search',
-      data: {
-        name: word
-      }
-    }).then((res) => {console.log(res)}).catch((err) => {console.log(err)})
+      url: '/terms/search/' + name,
+    })
+    .then((res) => {console.log(res);
+      this.setState({glossary: res.data});
+    })
+    .catch((err) => {console.log(err)})
   }
 
 
   render() {
     return(
       <div>
-      <p>Glossary!</p>
+      <h1>Glossary!</h1>
       <div className="search">
         <Search onSearch={this.search}/>
       </div>
@@ -98,9 +104,8 @@ class App extends React.Component {
         <ul>
           {this.state.glossary.map(term => (
             <li>
-              {term.name} : {term.description}
-              <button>Edit</button>
-              <button name={term.name} onClick={this.delete}>Delete</button>
+              <Edit name={term.name} description={term.description} onClick={this.edit} onDelete={this.delete}/>
+              {/* <button name={term.name} onClick={this.delete}>Delete</button> */}
             </li>
           ))}
         </ul>

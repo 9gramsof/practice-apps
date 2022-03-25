@@ -42,6 +42,19 @@ app.get('/terms', (req, res) => {
 });
 
 //handle an EDIT request
+app.put('/terms', (req, res) => {
+  let name = req.body.name;
+  let nameUpdate = req.body.nameUpdate;
+  let descriptionUpdate = req.body.descriptionUpdate;
+  Term.findOneAndUpdate({name: name}, { name: nameUpdate, description: descriptionUpdate}).exec((err, result) => {
+    if (err) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(200);
+    }
+  })
+})
+
 
 //handle a DELETE request
 app.delete('/terms', (req, res) => {
@@ -58,17 +71,18 @@ app.delete('/terms', (req, res) => {
 })
 
 //handle a search GET request
-app.get('/terms/search', (req, res) => {
-  console.log(req.body.name)
-  let term = ".*" + req.body.name + ".*";
-  console.log(term);
+app.get('/terms/search/:term', (req, res) => {
+  // console.log(res.body.toString());
+  console.log(req.params.term);
+  let term = ".*" + req.params.term + ".*";
+  // console.log(term);
 
   Term.find({name: {$regex: term}}, (err, result) => {
     if (err) {
       res.send(err);
       return;
     }
-    console.log(result);
+    // console.log(result);
     res.json(result);
 
   })
