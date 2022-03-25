@@ -32,8 +32,8 @@ class Edit extends React.Component {
           <input type="text" placeholder="Edit the word"/>
           <input type="text" placeholder="Edit the description"/>
           <input type="submit" value="Edit" />
+          <button name={this.state.name} onClick={this.props.onDelete}>Delete</button>
         </form>
-        <button name={this.state.name} onClick={this.props.onDelete}>Delete</button>
       </div>
     )
   }
