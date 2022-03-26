@@ -19,13 +19,42 @@ app.use(logger);
 // Serves up all static and generated assets in ../client/dist.
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-/**** 
- * 
- * 
- * Other routes here....
- *
- * 
- */
+
+/*
+
+session_id = req.sessio_id
+data = {
+
+  login: {
+    name: String,
+    email: String,
+    password: String
+  },
+
+  shipping: {
+    line1: String,
+    line2: String,
+    city: String,
+    state: String,
+    zip: String,
+    phone: Number
+  },
+
+  billing: {
+    creditcard: String,
+    expiration: String,
+    CVV: String,
+    billingZipCode: String
+  }
+
+}
+*/
+
+app.get('url', (req, res)=>{
+
+  console.log(req.session_id);
+})
+
 
 app.listen(process.env.PORT);
 console.log(`Listening at http://localhost:${process.env.PORT}`);
